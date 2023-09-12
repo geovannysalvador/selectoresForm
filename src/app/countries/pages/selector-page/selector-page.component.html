@@ -8,7 +8,7 @@
     <!-- region -->
     <div class="row mb-3">
         <div class="col">
-            <label class="form-label">continente: </label>
+            <label class="form-label ">continente: </label>
             <select formControlName="region" class="form-control">
               <option value=""> --Seleccione el contienente-- </option>
               <option *ngFor="let region of regions"  [value]="region">{{region}}</option>
@@ -26,6 +26,18 @@
           </select>
       </div>
   </div>
+
+      <!-- Borders -->
+      <div class="row mb-3" *ngIf="borders.length > 0">
+        <div class="col">
+            <label class="form-label">Fronteras: </label>
+            <select formControlName="border" class="form-control">
+              <option value=""> --Lista de fronteras-- </option>
+              <option *ngFor="let border of borders" [value]="border">{{border}}</option>
+            </select>
+        </div>
+    </div>
+
 </form>
 
 <hr>

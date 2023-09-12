@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Country, Region, SmallCountry } from '../interfaces/country.interface';
-import { Observable, map, of, tap } from 'rxjs';
+import { Observable, count, map, of, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +36,19 @@ export class CountriesService {
         }))),
         // tap( response => console.log({response})
         // )
+      )
+  }
+
+  getCountryByCode(alphaCode:string):Observable<SmallCountry>{
+    const url:string = `${this.baseUrl}/alpha/${alphaCode}?fields=cca3,name,borders`
+
+    return this.http.get<Country>(url)
+      .pipe(
+        map( country => ({
+          name: country.name.common,
+          cca3: country.cca3,
+          borders: country.borders ?? []
+        }))
       )
   }
 
