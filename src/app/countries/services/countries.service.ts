@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Country, Region, SmallCountry } from '../interfaces/country.interface';
-import { Observable, count, map, of, tap } from 'rxjs';
+import { Observable, combineLatest, count, map, of, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -50,6 +50,21 @@ export class CountriesService {
           borders: country.borders ?? []
         }))
       )
+  }
+
+  // Para obtener los nombres, no solo los codigos y pintarlos
+  getCountryBordersByCodes(borders:string[]):Observable<SmallCountry[]>{
+    if (!borders || borders.length === 0) return of ([]);
+
+    const countriesRequest:Observable<SmallCountry>[] = [];
+    borders.forEach(code => {
+      const request = this.getCountryByCode(code);
+
+      countriesRequest.push(request);
+    })
+
+    // emite hasta que los obseevables emitan un valor
+    return combineLatest(countriesRequest)
   }
 
 }
